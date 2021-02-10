@@ -1,0 +1,94 @@
+{
+	"name": "pybuilder",
+	"displayName": "pybuilder",
+	"description": "",
+	"version": "0.0.1",
+	"engines": {
+		"vscode": "^1.50.0"
+	},
+	"categories": [
+		"Other"
+	],
+	"activationEvents": [
+		"onLanguage:python",
+		"onView:element-item",
+		"onView:sys-item",
+		"onCommand:itemClick"
+	],
+	"main": "./out/extension.js",
+	"contributes": {
+		"commands": [
+			{
+				"command": "pybuilder.start",
+				"title": "Start pybuilder!",
+				"category": "pybuilder"
+			}
+		],
+		"keybindings": [
+			{
+				"command": "pybuilder.showtime",
+				"key": "ctrl+1",
+				"when": "editorTextFocus"
+			}
+		],
+		"viewsContainers": {
+			"activitybar": [
+				{
+					"id": "treeView",
+					"title": "treeView",
+					"icon": "src/static/icon/icon.svg"
+				}
+			]
+		},
+		"views": {
+			"treeView": [
+				{
+					"id": "sys-item",
+					"name": "system",
+					"when": ""
+				},
+				{
+					"id": "element-item",
+					"name": "element",
+					"when": ""
+				}
+				
+
+			]
+		},
+		"menus": {
+			"editor/context": [
+				{
+					"when": "editorFocus",
+					"command": "pybuilder.showtime",
+					"group": "navigation"
+				}
+			]
+		}
+	},
+	"scripts": {
+		"vscode:prepublish": "npm run compile",
+		"compile": "tsc -p ./",
+		"watch": "tsc -watch -p ./",
+		"pretest": "npm run compile && npm run lint",
+		"lint": "eslint src --ext ts",
+		"test": "node ./out/test/runTest.js"
+	},
+	"devDependencies": {
+		"@types/vscode": "^1.52.0",
+		"@types/glob": "^7.1.3",
+		"@types/mocha": "^8.0.4",
+		"@types/node": "^12.11.7",
+		"eslint": "^7.15.0",
+		"@typescript-eslint/eslint-plugin": "^4.9.0",
+		"@typescript-eslint/parser": "^4.9.0",
+		"glob": "^7.1.6",
+		"mocha": "^8.1.3",
+		"typescript": "^4.1.2",
+		"vscode-test": "^1.4.1"
+	},
+	"dependencies": {
+		"fs-extra": "^9.0.1",
+		"path": "^0.12.7"
+	}
+}

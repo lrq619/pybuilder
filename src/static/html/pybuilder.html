@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pybuilder</title>
+    <script src="../js/jQuery.js"></script>
+    <script src="../js/elm.js"></script>
+    <script src="../js/renderElements.js"></script>
+    <script src="../js/renderMsgs.js"></script>
+    <script src="../js/element.js"></script>
+    <script src="../js/jscolor.js"></script>
+</head>
+<body>
+    <pre id="elm">
+    <script>
+        const basePath = new URL(document.baseURI).pathname
+        console.log(basePath)
+        var app = Elm.Main.init({ 
+            node: document.getElementById("elm"),
+        });
+        app.ports.receiveData.send(basePath)
+        window.addEventListener('message', event => {
+            const message = event.data['txt'];
+            app.ports.receiveData.send(message);
+            
+        })
+    </script>
+    </pre>
+    
+</body>
+</html>
