@@ -57,6 +57,28 @@ function hasRepeatName(){
     return false;
 }
 
+function move(e){
+    if(!is_arrow){return;}
+        if (dragging) {
+            var e = e || window.event;
+            var oX = e.clientX - iX;
+            var oY = e.clientY - iY;
+            oX = Math.max(oX,0);
+            oY = Math.max(oY,0);
+            if($(focus).attr("id") !== "window"){
+                oX = Math.min(oX,$(".winBody").width() - $(focus).width());
+                oY = Math.min(oY,$(".winBody").height() - $(focus).height());
+            }
+            
+            $(focus).css({
+                "left": oX + "px",
+                "top": oY + "px"
+            });
+            renderAttrBoard(focus);
+            return false;
+        }
+};
+
 function interval(){
     if(eleid > buffer_eleid){
         let newelement = $(".element[eleid='"+eleid+"']");
@@ -106,12 +128,6 @@ function elementBdfun(element){
         iY = e.clientY - this.offsetTop;
         return false;
     });
-    $(element).mouseenter(function(e){
-        e.stopPropagation();
-    });
-    $(element).mouseleave(function(e){
-        e.stopPropagation();
-    });
     $(element).children().children(".leftHandler").mousedown (function (e){
         if(!is_arrow){return;}
         e.stopPropagation();
@@ -125,6 +141,7 @@ function elementBdfun(element){
         $(document).mouseup(function(){
             if(!is_arrow){return;}
             $(document).unbind("mousemove");
+            $(document).mousemove(move);
         });
         $(document)[0].ondragstart
                 = $(document)[0].onselectstart
@@ -145,6 +162,7 @@ function elementBdfun(element){
         });
         $(document).mouseup(function(){
             $(document).unbind("mousemove");
+            $(document).mousemove(move);
         });
         $(document)[0].ondragstart
                 = $(document)[0].onselectstart
@@ -169,6 +187,7 @@ function elementBdfun(element){
         });
         $(document).mouseup(function(){
             $(document).unbind("mousemove");
+            $(document).mousemove(move);
         });
         $(document)[0].ondragstart
                 = $(document)[0].onselectstart
@@ -331,27 +350,8 @@ $(document).ready(function(){
             focus = undefined;
         }
     });
-    $(document).mousemove(function(e) {
-        if(!is_arrow){return;}
-        if (dragging) {
-            var e = e || window.event;
-            var oX = e.clientX - iX;
-            var oY = e.clientY - iY;
-            oX = Math.max(oX,0);
-            oY = Math.max(oY,0);
-            if($(focus).attr("id") !== "window"){
-                oX = Math.min(oX,$(".winBody").width() - $(focus).width());
-                oY = Math.min(oY,$(".winBody").height() - $(focus).height());
-            }
-            
-            $(focus).css({
-                "left": oX + "px",
-                "top": oY + "px"
-            });
-            renderAttrBoard(focus);
-            return false;
-        }
-    });
+    
+    $(document).mousemove(move);
     $(document).mouseup(function(e) {
         if(!is_arrow){return;}
         dragging = false;
