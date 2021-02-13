@@ -328,7 +328,7 @@ export function activate(context: vscode.ExtensionContext) {
 				console.log("write successfule!");
 			},undefined, context.subscriptions);
 		};
-		if(label === "new table" && panel===undefined){
+		if(label === "new form" && panel===undefined){
 			panel = vscode.window.createWebviewPanel(
 				'pybuilder',
 				'pybuilder',

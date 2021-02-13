@@ -2,7 +2,7 @@ import { TreeItem, TreeItemCollapsibleState, TreeDataProvider, Uri, window, Even
 import { join } from 'path';
 
 const ITEM_ICON_MAP = new Map<string,string>([
-    ['new table','table.svg'],
+    ['new form','form.svg'],
     ['arrow','arrow.svg'],
     ['button','btn.svg'],
     ['entry','entry.svg'],
@@ -66,7 +66,7 @@ export class SysChoiceProvider implements TreeDataProvider<TreeItemNode>{
         return element;
     }
     getChildren(element?: TreeItemNode | undefined): import("vscode").ProviderResult<TreeItemNode[]> {
-        return ['new table','arrow','submit'].map(
+        return ['new form','arrow','submit'].map(
             item => new TreeItemNode(
                 item as string,
                 TreeItemCollapsibleState.None as TreeItemCollapsibleState,

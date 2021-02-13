@@ -63,8 +63,11 @@ function move(e){
             var e = e || window.event;
             var oX = e.clientX - iX;
             var oY = e.clientY - iY;
-            oX = Math.max(oX,0);
-            oY = Math.max(oY,0);
+            if($(focus).parent().attr("name") === "window"){
+                oX = Math.max(oX,0);
+                oY = Math.max(oY,0);
+            }
+            
             if($(focus).attr("id") !== "window"){
                 oX = Math.min(oX,$(".winBody").width() - $(focus).width());
                 oY = Math.min(oY,$(".winBody").height() - $(focus).height());
@@ -521,6 +524,12 @@ $(document).ready(function(){
         if(eleid === "0"){
             vscode.postMessage("DelMainWin");
             return;
+        }
+        let children = $(focus).children(".element");
+        console.log(children);
+        for(let i=0;i<children.length;i++){
+            let child_eleid = $(children[i]).attr("eleid");
+            delete dic[child_eleid];
         }
         $(focus).remove();
         focus = undefined;
