@@ -13,9 +13,9 @@ Pybuilder provides most of the basic pythin tkinter elements, including followin
 * checkbutton
 * radiobutton
 * progressbar
-More elements will be added in later releases;
-Choose 'arrow' in leftsied's treeview and click the elements you want to adjust, an attributeboard will pop out in the right side.
-There are total three parts of the attributeboard, including:
+More elements will be added in later releases  
+Choose 'arrow' in leftsied's treeview and click the elements you want to adjust, an attributeboard will pop out in the right side.  
+There are total three parts of the attributeboard, including:  
 * Attributes: Basic attributes.
 * Binding Functions: Add Binding Functions to corresponding events.
 * Other: Specific attributes for some elements.  
