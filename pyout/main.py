@@ -1,4 +1,4 @@
-from Form2 import Form
+from Form1 import Form
 if __name__ == "__main__":
     form = Form()
 
