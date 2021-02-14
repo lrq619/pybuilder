@@ -1,6 +1,7 @@
 
 //global variables
 // import 'renderMsgs.js';
+var title;//document title
 var focus = undefined;
 var buffer_focus = undefined;
 var buffer_ele_num = 0;
@@ -368,6 +369,9 @@ $(document).ready(function(){
     window.addEventListener('message', event => {
         const message = event.data['txt'];
         console.log(message);
+        if(message.substring(0,4) === "Form"){
+            document.title = message;
+        }
         if(message === "submit"){
             if(hasRepeatName()){
                 console.log("repeat!");
@@ -383,7 +387,8 @@ $(document).ready(function(){
                 checkbutton: renderCkbMsgs(),
                 radiobutton: renderRdbMsgs(),
                 progressbar: renderPgbMsgs(),
-                dic: dic
+                dic: dic,
+                title: document.title
             };
             vscode.postMessage(out_msg);
             return;

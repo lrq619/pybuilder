@@ -1,6 +1,5 @@
-
-from pybuilder import Form1
+from Form2 import Form
 if __name__ == "__main__":
-    form = Form1()
+    form = Form()
 
     form.window.mainloop()

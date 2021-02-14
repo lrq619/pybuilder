@@ -6,28 +6,26 @@ import {join,dirname,resolve} from 'path';
 import {readFileSync, writeFile, writeFileSync} from 'fs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+var forms = new Array();
 var panel : vscode.WebviewPanel | undefined;
 function renderBindFun(binding : any){
 
 }
 let cmds = new Array();
-function renderWinContent(window : any,dic : any){
+function renderWinContent(window : any,dic : any, title : any){
 	var WinContent = 
 "#!/usr/bin/python3\n\
 import tkinter as tk\n\
 import tkinter.ttk as ttk\n\
-from form import Form\n\
 \n\
-class Form1(Form):\n\
+class Form():\n\
 	def __init__(self):\n\
 	#Properties of main window.\n\
-		title=\""+window.text+"\"\n\
-		width="+window.width+"\n\
-		height="+window.height+"\n\
-		x="+window.left+"\n\
-		y="+window.top+"\n\
-		bg=\""+window.bgcolor+"\"\n\
-		Form.__init__(self,title,width,height,x,y,bg)\n\
+		self.window = tk.Tk()\n\
+		self.window.title(\""+window.text+"\")\n\
+		self.size_str = str("+window.width+")+\"x\"+str("+window.height+")+\"+\"+str("+window.left+")+\"+\"+str("+window.top+")\n\
+		self.window.geometry(self.size_str)\n\
+		self.window.config(bg=\""+window.bgcolor+"\")\n\
 		\n\
 		self.style = ttk.Style()\n";
 		let bdfuns = dic[window.eleid];
@@ -300,12 +298,49 @@ export function activate(context: vscode.ExtensionContext) {
 	
 	
 	let itemClick = vscode.commands.registerCommand('itemClick',(label) => {
+		if(label === "new form"){
+			let title = 'Form'+(forms.length+1);
+			panel = vscode.window.createWebviewPanel(
+				'pybuilder',
+				title,
+				vscode.ViewColumn.One,
+				{
+					enableScripts: true, // 启用JS，默认禁用
+					retainContextWhenHidden: true,
+				}
+
+			);
+			panel.webview.html = getWebViewContent(context,"src/static/html/pybuilder.html");
+			panel?.webview.postMessage({'txt':title});
+			panel?.webview.onDidReceiveMessage(message => {
+				console.log(message);
+				if(message==="DelMainWin"){
+					vscode.window.showWarningMessage("Main Window can't be deleted!");
+					return;
+				}else if(message==="RepName"){
+					vscode.window.showWarningMessage("Names of Elements can't be repeated!");
+					return;
+				}else if(message==="FrmInFrm"){
+					vscode.window.showWarningMessage("Frame can't be created in frame!");
+					return;
+				}
+			});
+			panel.onDidChangeViewState(
+				e => {
+				   panel = e.webviewPanel;
+				}
+				
+			);
+
+			forms.push(panel);
+		}
 		if(label === "submit"){
 			vscode.window.showInformationMessage("Your code has been submitted!");
+			
 			panel?.webview.onDidReceiveMessage(message => {
-				let filepath = context.extensionPath+"/pyout/"+message.window.text+".py";
+				let filepath = context.extensionPath+"/pyout/"+message.title+".py";
 	
-				var WinContent = renderWinContent(message.window,message.dic);
+				var WinContent = renderWinContent(message.window,message.dic,message.title);
 	
 				var BtnContent = renderBtnContent(message.button,message.dic);
 				
@@ -325,37 +360,10 @@ export function activate(context: vscode.ExtensionContext) {
 	
 				writeFileSync(filepath,filecontent);
 	
-				console.log("write successfule!");
+				console.log("write successful!");
 			},undefined, context.subscriptions);
 		};
-		if(label === "new form" && panel===undefined){
-			panel = vscode.window.createWebviewPanel(
-				'pybuilder',
-				'pybuilder',
-				vscode.ViewColumn.One,
-				{
-					enableScripts: true, // 启用JS，默认禁用
-					retainContextWhenHidden: true,
-				}
-
-			);
-			// panel.webview.html;
-			panel.webview.html = getWebViewContent(context,"src/static/html/pybuilder.html");
-			panel?.webview.onDidReceiveMessage(message => {
-				console.log(message);
-				if(message==="DelMainWin"){
-					vscode.window.showWarningMessage("Main Window can't be deleted!");
-					return;
-				}else if(message==="RepName"){
-					vscode.window.showWarningMessage("Names of Elements can't be repeated!");
-					return;
-				}else if(message==="FrmInFrm"){
-					vscode.window.showWarningMessage("Frame can't be created in frame!");
-					return;
-				}
-			});
-		}
-		// vscode.window.showInformationMessage(label);
+		
 		panel?.webview.postMessage({'txt':label});
 		
 	});

@@ -5612,7 +5612,6 @@ var $author$project$Main$subscriptions = function (model) {
 				A2($elm$json$Json$Decode$map, $author$project$Msg$MousePos, pos))
 			]));
 };
-var $author$project$State$Button = {$: 'Button'};
 var $author$project$Main$changeStatic = F2(
 	function (model, baseUrl) {
 		var _v0 = model._static;
@@ -5635,17 +5634,9 @@ var $author$project$Main$update = F2(
 					$author$project$Main$sendData('Hello JavaScript!'));
 			case 'ReceivedDataFromJS':
 				var data = msg.a;
-				if (data === 'button') {
-					return _Utils_Tuple2(
-						_Utils_update(
-							model,
-							{mouse: $author$project$State$Button}),
-						$elm$core$Platform$Cmd$none);
-				} else {
-					return _Utils_Tuple2(
-						A2($author$project$Main$changeStatic, model, data),
-						$elm$core$Platform$Cmd$none);
-				}
+				return _Utils_Tuple2(
+					A2($author$project$Main$changeStatic, model, data),
+					$elm$core$Platform$Cmd$none);
 			default:
 				var pos = msg.a;
 				return _Utils_Tuple2(model, $elm$core$Platform$Cmd$none);
