@@ -383,7 +383,8 @@ function getWebViewContent(context: any, templatePath: any) {
         return $1 + vscode.Uri.file(resolve(dirPath, $2)).with({ scheme: 'vscode-resource' }).toString() + '"';
 	});
 
-	const basePath = context.extensionPath+"/src/static/html/index.html";
+	const basePath = context.extensionPath+"/src/static/html/pyuilder.html";
+	console.log(basePath);
 	const staticPath = vscode.Uri.file(resolve(basePath)).with({ scheme: 'vscode-resource' }).toString() + '"';
 	html = html.replace("const basePath = new URL(document.baseURI).pathname", "const basePath = "+"'"+staticPath+"'");
 	return html;
