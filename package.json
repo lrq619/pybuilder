@@ -2,7 +2,8 @@
 	"name": "pybuilder",
 	"displayName": "pybuilder",
 	"description": "",
-	"version": "0.0.1",
+	"version": "0.0.2",
+	"publisher": "lrq619",
 	"engines": {
 		"vscode": "^1.50.0"
 	},
@@ -26,9 +27,6 @@
 		],
 		"keybindings": [
 			{
-				"command": "pybuilder.showtime",
-				"key": "ctrl+1",
-				"when": "editorTextFocus"
 			}
 		],
 		"viewsContainers": {
@@ -75,7 +73,7 @@
 		"test": "node ./out/test/runTest.js"
 	},
 	"devDependencies": {
-		"@types/vscode": "^1.52.0",
+		"@types/vscode": "^1.50.0",
 		"@types/glob": "^7.1.3",
 		"@types/mocha": "^8.0.4",
 		"@types/node": "^12.11.7",

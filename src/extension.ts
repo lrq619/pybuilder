@@ -6,6 +6,7 @@ import {join,dirname,resolve} from 'path';
 import {readFileSync, writeFile, writeFileSync} from 'fs';
 // this method is called when your extension is activated
 // your extension is activated the very first time the command is executed
+
 var forms = new Array();
 var panel : vscode.WebviewPanel | undefined;
 function renderBindFun(binding : any){
@@ -260,12 +261,10 @@ function renderCallbacks(dic : any){
 	}
 	
 	for(var key1 in dic){
-		console.log(key1);
 		if(dic[key1] === null){
 			continue;
 		}
 		for(var key2 in dic[key1]){
-			console.log(key2);
 			if(dic[key1][key2] === null){
 				continue;
 			}
@@ -296,7 +295,6 @@ export function activate(context: vscode.ExtensionContext) {
 	// Now provide the implementation of the command with registerCommand
 	// The commandId parameter must match the command field in package.json	
 	
-	
 	let itemClick = vscode.commands.registerCommand('itemClick',(label) => {
 		if(label === "new form"){
 			let title = 'Form'+(forms.length+1);
@@ -325,19 +323,6 @@ export function activate(context: vscode.ExtensionContext) {
 					return;
 				}
 			});
-			panel.onDidChangeViewState(
-				e => {
-				   panel = e.webviewPanel;
-				}
-				
-			);
-
-			forms.push(panel);
-		}
-		if(label === "submit"){
-			vscode.window.showInformationMessage("Your code has been submitted!");
-			
-			
 			panel?.webview.onDidReceiveMessage(message => {
 	
 				var WinContent = renderWinContent(message.window,message.dic,message.title);
@@ -357,6 +342,8 @@ export function activate(context: vscode.ExtensionContext) {
 				var PgbContent = renderPgbContent(message.progressbar, message.dic);
 
 				var filecontent = WinContent +  FrmContent + BtnContent + EtrContent + LabContent  + CkbContent +RdbContent+PgbContent+renderCgStyFun() + renderCallbacks(message.dic);
+				
+				// let fileInfos = vscode.window.showSaveDialog();
 				vscode.window.showSaveDialog().then(fileInfos => {
 					let filepath;
 					if(fileInfos?.path === undefined){
@@ -368,12 +355,26 @@ export function activate(context: vscode.ExtensionContext) {
 					writeFileSync(filepath, filecontent);
 					console.log("write successful!");
 				});
-	
-				
 			},undefined, context.subscriptions);
+			panel.onDidChangeViewState(
+				e => {
+				   panel = e.webviewPanel;
+				   console.log("panel changed!");
+				}
+				
+			);
+
+			forms.push(panel);
+		}
+
+		panel?.webview.postMessage({'txt':label});
+
+		if(label === "submit"){
+			label = "arrow";
+			vscode.window.showInformationMessage("Your code has been submitted!");
 		};
 		
-		panel?.webview.postMessage({'txt':label});
+		
 		
 	});
 	
@@ -381,8 +382,7 @@ export function activate(context: vscode.ExtensionContext) {
 	ElementProvider.initElementItem();
 	SysChoiceProvider.initSysChoiceItem();
 	context.subscriptions.push(itemClick);
-	
-	
+
 }
 
 

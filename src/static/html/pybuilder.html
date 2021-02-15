@@ -22,7 +22,7 @@
         app.ports.receiveData.send(basePath)
         window.addEventListener('message', event => {
             const message = event.data['txt'];
-            console.log(message);
+            
             app.ports.receiveData.send(message);
         })
     </script>
