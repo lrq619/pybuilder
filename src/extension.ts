@@ -337,8 +337,8 @@ export function activate(context: vscode.ExtensionContext) {
 		if(label === "submit"){
 			vscode.window.showInformationMessage("Your code has been submitted!");
 			
+			
 			panel?.webview.onDidReceiveMessage(message => {
-				let filepath = context.extensionPath+"/pyout/"+message.title+".py";
 	
 				var WinContent = renderWinContent(message.window,message.dic,message.title);
 	
@@ -357,10 +357,19 @@ export function activate(context: vscode.ExtensionContext) {
 				var PgbContent = renderPgbContent(message.progressbar, message.dic);
 
 				var filecontent = WinContent +  FrmContent + BtnContent + EtrContent + LabContent  + CkbContent +RdbContent+PgbContent+renderCgStyFun() + renderCallbacks(message.dic);
+				vscode.window.showSaveDialog().then(fileInfos => {
+					let filepath;
+					if(fileInfos?.path === undefined){
+						filepath = context.extensionPath+"/pyout/"+message.title+".py";
+					}else{
+						filepath = fileInfos.path;
+					}
+					console.log(filepath);
+					writeFileSync(filepath, filecontent);
+					console.log("write successful!");
+				});
 	
-				writeFileSync(filepath,filecontent);
-	
-				console.log("write successful!");
+				
 			},undefined, context.subscriptions);
 		};
 		
