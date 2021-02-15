@@ -247,6 +247,8 @@ function renderCgStyFun(){
 	return content;
 }
 
+
+
 function renderCallbacks(dic : any){
 	
 	let content = "";
@@ -283,6 +285,14 @@ function renderCallbacks(dic : any){
 	pass\n\
 	\n";
 	}
+	return content;
+}
+
+function renderMainfun(){
+	let content = 
+'if __name__ == "__main__":\n\
+	form = Form()\n\
+	form.window.mainloop()';
 	return content;
 }
 export function activate(context: vscode.ExtensionContext) {
@@ -341,20 +351,30 @@ export function activate(context: vscode.ExtensionContext) {
 
 				var PgbContent = renderPgbContent(message.progressbar, message.dic);
 
-				var filecontent = WinContent +  FrmContent + BtnContent + EtrContent + LabContent  + CkbContent +RdbContent+PgbContent+renderCgStyFun() + renderCallbacks(message.dic);
+
+				var filecontent = WinContent +  FrmContent + BtnContent + EtrContent + LabContent  + CkbContent +RdbContent+PgbContent+renderCgStyFun() + renderCallbacks(message.dic) + renderMainfun();
 				
 				// let fileInfos = vscode.window.showSaveDialog();
-				vscode.window.showSaveDialog().then(fileInfos => {
-					let filepath;
-					if(fileInfos?.path === undefined){
-						filepath = context.extensionPath+"/pyout/"+message.title+".py";
-					}else{
-						filepath = fileInfos.path;
-					}
-					console.log(filepath);
-					writeFileSync(filepath, filecontent);
-					console.log("write successful!");
-				});
+				let defaultpath = readFileSync(context.extensionPath+"/out/defaultsavepath.txt");
+                let defaulturi = defaultpath + message.title + ".py";
+                vscode.window.showSaveDialog({
+                    defaultUri:vscode.Uri.file(defaulturi)
+                }).then(fileInfos => {
+                    if(fileInfos === undefined){
+                        console.log("Failed to write python code!");
+                        return;
+                    }
+                    let filepath;
+                    filepath = fileInfos.fsPath;
+                    console.log(filepath);
+                    writeFileSync(filepath, filecontent);
+                    console.log("write successful!");
+                    writeFileSync(context.extensionPath+"/out/defaultsavepath.txt",dirname(filepath)+'/');
+                    vscode.window.showTextDocument(vscode.Uri.file(filepath));
+                },reason => {
+                    console.log(reason);
+                    console.log("Failed to write python code!");
+                });
 			},undefined, context.subscriptions);
 			panel.onDidChangeViewState(
 				e => {
