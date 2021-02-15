@@ -53,6 +53,14 @@ This extension contributes the following settings:
 * `myExtension.thing`: set to `blah` to do something
 
 
-### 1.0.0
+### 0.0.1
 
-Initial release of pybuilder
+Initial release.
+
+### 0.0.2
+
+Bug fix: Icons can not be seen
+
+### 0.0.3
+
+Bug fix: Save Dialog be opened several times.
