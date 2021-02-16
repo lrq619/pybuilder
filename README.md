@@ -67,5 +67,8 @@ Bug fix: Save Dialog be opened several times.
 
 ### 0.1.0
 
-Bug fix: Can not save python code under Windows.
+Bug fix: Can not save python code under Windows.  
 Adding new feature: Remember last time's storage position.
+
+### 0.1.1
+Bug fix: Adding Icon.  
