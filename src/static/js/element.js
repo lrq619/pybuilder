@@ -1,5 +1,8 @@
 
 //global variables
+
+
+
 // import 'renderMsgs.js';
 var title;//document title
 var focus = undefined;
@@ -359,9 +362,9 @@ $(document).ready(function(){
     $(document).mouseup(function(e) {
         if(!is_arrow){return;}
         dragging = false;
-        // focus.releaseCapture && focus.releaseCapture();
-        // e.cancelBubble = true;
+        
     });
+    
     let newelement = $(".element[eleid='"+eleid+"']");
     elementBdfun(newelement);
     $("body").css("overflow","hidden");
@@ -454,7 +457,7 @@ $(document).ready(function(){
         let id = $(this).attr("id");
         let board_id = id + "-board";
         let board = document.getElementById(board_id);
-        $(board).css("display","block")
+        $(board).css("display","block");
         for(i=0;i < $(".board-sel").length;i++){
             var sel = $(".board-sel")[i];
             if(sel != this){
@@ -612,6 +615,14 @@ $(document).ready(function(){
         document.getElementById(sel_id).value = $(this).val();
     });
     setInterval("interval()",100);//This function will be excuted in loop
+    setTimeout(() => {
+        focus = $("#window")[0];
+        $(focus).children(".frame").show();
+        is_arrow = true;
+    }, 100);
+    
+    
+    
 });
 
 

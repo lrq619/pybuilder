@@ -232,7 +232,10 @@ function renderCallbacks(dic) {
             continue;
         }
         if (callbacks.indexOf(cmds[i]) === -1) {
-            callbacks.push(cmds[i]);
+            content +=
+                "def " + cmds[i] + "():\n\
+	pass\n\
+	\n";
         }
     }
     for (var key1 in dic) {
