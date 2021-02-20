@@ -12,6 +12,7 @@ var panel : vscode.WebviewPanel | undefined;
 function renderBindFun(binding : any){
 
 }
+
 let cmds = new Array();
 function renderWinContent(window : any,dic : any, title : any){
 	var WinContent = 
@@ -44,13 +45,16 @@ function renderBtnContent(inputs:any, dic : any){
 	
 	var Content = "";
 	for(var i=0;i<inputs.length;i++){
+		
 		let eleid = inputs[i].eleid;
 		let cmd;
 		if(inputs[i].command === undefined){
 			cmd = "";
 		}else{
 			cmd = ", command="+inputs[i].command;
-			cmds.push(inputs[i].command);
+			if(cmds.indexOf(cmd) === -1){
+				cmds.push(inputs[i].command);
+			}
 		};
 		
 		Content += 
@@ -264,6 +268,7 @@ function renderCallbacks(dic : any){
 	\n";
 		}
 	}
+	cmds = new Array();
 	
 	for(var key1 in dic){
 		if(dic[key1] === null){

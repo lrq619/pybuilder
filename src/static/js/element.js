@@ -394,6 +394,7 @@ $(document).ready(function(){
                 title: document.title
             };
             vscode.postMessage(out_msg);
+            
             return;
         }
         if(message === "arrow"){

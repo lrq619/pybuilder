@@ -50,7 +50,9 @@ function renderBtnContent(inputs, dic) {
         }
         else {
             cmd = ", command=" + inputs[i].command;
-            cmds.push(inputs[i].command);
+            if (cmds.indexOf(cmd) === -1) {
+                cmds.push(inputs[i].command);
+            }
         }
         ;
         Content +=
@@ -238,6 +240,7 @@ function renderCallbacks(dic) {
 	\n";
         }
     }
+    cmds = new Array();
     for (var key1 in dic) {
         if (dic[key1] === null) {
             continue;

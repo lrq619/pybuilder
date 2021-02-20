@@ -85,3 +85,6 @@ Bug fix: Images can not be shown in Readme.md.
 ### 1.0.0
 Bug fix: Button's command can not be excuted correctly;  
 Adding new feature: focus will be automatically switched to window after form is created.
+
+### 1.0.1
+Bug fix: Button's command will be written twice while submitted twice.
