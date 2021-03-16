@@ -13,6 +13,7 @@ const ITEM_ICON_MAP = new Map([
     ['checkbutton', 'checkbutton.svg'],
     ['radiobutton', 'radiobutton.svg'],
     ['progressbar', 'progressbar.svg'],
+    ['filedialog', 'file.svg'],
     ['submit', 'submit.svg']
 ]);
 class TreeItemNode extends vscode_1.TreeItem {
@@ -40,7 +41,7 @@ class ElementProvider {
         return element;
     }
     getChildren(element) {
-        return ['button', 'entry', 'label', 'frame', 'checkbutton', 'radiobutton', 'progressbar'].map(item => new TreeItemNode(item, vscode_1.TreeItemCollapsibleState.None));
+        return ['button', 'entry', 'label', 'frame', 'checkbutton', 'radiobutton', 'progressbar', 'filedialog'].map(item => new TreeItemNode(item, vscode_1.TreeItemCollapsibleState.None));
     }
     static initElementItem() {
         // 实例化 TreeViewProvider

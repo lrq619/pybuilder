@@ -168,3 +168,25 @@ function renderPgbMsg(elt){
         eleid: $(elt).attr("eleid"),
     };
 }
+function renderFdgMsgs(){
+    let elts = $(".element[subclass='filedialog']");
+    var msgs = new Array(elts.length);
+    for(i=0;i<elts.length;i++){
+        msgs[i] = renderFdgMsg(elts[i]);
+    }
+    return msgs;
+}
+function renderFdgMsg(elt){
+    return {
+        master: $(elt).parent().attr("name"),
+        name: $(elt).attr("name"),
+        text: $(elt).children(".filebutton").text(),
+        width: delete_px($(elt).css("width")),
+        height: delete_px($(elt).css("height")),
+        top: delete_px($(elt).css("top")),
+        left: delete_px($(elt).css("left")),
+        fgcolor: colorRGB2Hex($(elt).children(".filebutton").css("color")),
+        bgcolor: colorRGB2Hex($(elt).children(".filebutton").css("background-color")),
+        eleid: $(elt).attr("eleid"),
+    };
+}

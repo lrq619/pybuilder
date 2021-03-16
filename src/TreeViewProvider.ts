@@ -11,6 +11,7 @@ const ITEM_ICON_MAP = new Map<string,string>([
     ['checkbutton','checkbutton.svg'],
     ['radiobutton','radiobutton.svg'],
     ['progressbar','progressbar.svg'],
+    ['filedialog','file.svg'],
     ['submit','submit.svg']
     
 ]);
@@ -43,7 +44,7 @@ export class ElementProvider implements TreeDataProvider<TreeItemNode>{
         return element;
     }
     getChildren(element?: TreeItemNode | undefined): import("vscode").ProviderResult<TreeItemNode[]> {
-        return ['button','entry','label','frame','checkbutton','radiobutton','progressbar'].map(
+        return ['button','entry','label','frame','checkbutton','radiobutton','progressbar','filedialog'].map(
             item => new TreeItemNode(
                 item as string,
                 TreeItemCollapsibleState.None as TreeItemCollapsibleState,

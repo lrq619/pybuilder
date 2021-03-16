@@ -22,6 +22,7 @@ var is_frame = false;
 var is_checkbutton = false;
 var is_radiobutton = false;
 var is_progressbar = false;
+var is_filedialog = false;
 const testMode = false; const vscode = testMode ? {} : acquireVsCodeApi();
 var element_id = 0;
 
@@ -328,6 +329,12 @@ function renderAttrBoard(focus){
             $("#background-color").val("#F0F0F0");
             $("#background-color").attr("disabled","disabled");
             break;
+        case "filedialog":
+            $("#board-title").html("FileDialog");
+            $("#text").val($(focus).children(".filebutton").text());
+            $("#foreground-color").val(colorRGB2Hex($(focus).children(".filebutton").css("color")));
+            $("#background-color").val(colorRGB2Hex($(focus).children(".filebutton").css("background-color")));
+            break;
 
     }
     let fgcolor = 'linear-gradient(to right, '+$("#foreground-color").val()+' 0%, '+$("#foreground-color").val()+' 30px, rgba(0, 0, 0, 0) 31px, rgba(0, 0, 0, 0) 100%), url("data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAACAAAAAQCAYAAAB3AH1ZAAAAU0lEQVRIS2OcOXPmfwY84OzZs/ikGYyNjfHK49KfkpLCsG3btuWMow4YDYHREBjwEEhLS8NbDpCbz2GFAy79Tk5ODEuXLl3OOOqA0RAYDYGBDgEA8m6qcb3sNVEAAAAASUVORK5CYII=")';
@@ -390,6 +397,7 @@ $(document).ready(function(){
                 checkbutton: renderCkbMsgs(),
                 radiobutton: renderRdbMsgs(),
                 progressbar: renderPgbMsgs(),
+                filedialog: renderFdgMsgs(),
                 dic: dic,
                 title: document.title
             };
@@ -446,6 +454,12 @@ $(document).ready(function(){
         }else{
             is_progressbar = false;
         }
+
+        if(message === "filedialog"){
+            is_filedialog = true;
+        }else{
+            is_filedialog = false;
+        }
     });
     
     
@@ -495,6 +509,8 @@ $(document).ready(function(){
                         $(focus).children("."+subclass).css("color",$(this).val());
                     }else if(subclass === "checkbutton" || subclass === "radiobutton"){
                         $(focus).css("color",$(this).val());
+                    }else if(subclass === "filedialog"){
+                        $(focus).children(".filebutton").css("color",$(this).val());
                     }
                     break;
                 case("background-color"):
@@ -504,6 +520,8 @@ $(document).ready(function(){
                         $(focus).children(".winBody").css("background-color",$(this).val());
                     }else if(subclass === "frame" || subclass === "checkbutton" || subclass === "radiobutton"){
                         $(focus).css("background-color",$(this).val());
+                    }else if(subclass === "filedialog"){
+                        $(focus).children(".filebutton").css("background-color",$(this).val());
                     }
 
                     break;
@@ -600,6 +618,14 @@ $(document).ready(function(){
             x = e.clientX - parseFloat($("#window").css("left"))- 50;
             y = e.clientY - parseFloat($("#window").css("top")) - 45;
             renderProgressbar($(".winBody"),x,y);
+            return;
+        }
+
+        if(is_filedialog){
+            e.stopPropagation();
+            x = e.clientX - parseFloat($("#window").css("left"))- 50;
+            y = e.clientY - parseFloat($("#window").css("top")) - 45;
+            renderFileDialog($(".winBody"),x,y);
             return;
         }
 

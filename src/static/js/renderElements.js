@@ -241,3 +241,22 @@ function renderProgressbar(parent,x,y){
     }
     dic[eleid.toString()] = new Array();
 }
+
+function renderFileDialog(parent,x,y){
+    eleid++;
+    filedialog_html = '<div class="element" subclass="filedialog" \
+    eleid='+eleid+
+    ' name=fdg_'+eleid+
+    ' style="width: 250px; height: 40px; left: '+x+'px; top: '+y+'px; position: absolute; color:#000000; background:#F0F0F0;border: 1px solid #c9c9c9">\
+    <input class="fileentry" style="width: 60%; height: calc(80% - 6px);left: 0px; top: 10%; position: absolute;color:#000000;">\
+    <button class="filebutton" style="width: 30%; height:80%; left: 70%; top: 10%; position: absolute; background: #F0F0F0;color: #000000">path</button>\
+    <div class="frame" style="width: calc(100% + 10px); height: calc(100% + 10px); left: -5px; top: -5px; position: absolute; border: 1px solid black; cursor: move; display: none;">\
+    <div class="leftHandler" style="width: 5px; height: 95%; position: absolute; left: calc(100% - 5px); top: 0px; cursor: e-resize;"></div>\
+    <div class="downHandler" style="width: 95%; height: 5px; position: absolute; left: 0px; top: calc(100% - 5px); cursor: n-resize;"></div><div class="allHandler" style="width: 5px; height: 5px; position: absolute; left: calc(100% - 5px); top: calc(100% - 5px); cursor: nw-resize;"></div></div></div>';
+    if(parent.attr("class") === "winBody"){
+        $("#frameseparate").before(filedialog_html);
+    }else{
+        parent.append(filedialog_html);
+    }
+    dic[eleid.toString()] = new Array();
+}

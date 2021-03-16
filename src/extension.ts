@@ -19,6 +19,7 @@ function renderWinContent(window : any,dic : any, title : any){
 "#!/usr/bin/python3\n\
 import tkinter as tk\n\
 import tkinter.ttk as ttk\n\
+from tkinter.filedialog import *\n\
 \n\
 class Form():\n\
 	def __init__(self):\n\
@@ -241,6 +242,48 @@ function renderPgbContent(inputs:any, dic : any){
 	return Content;
 }
 
+function renderFdgContent(inputs:any, dic : any){
+	
+	var Content = "";
+	for(var i=0;i<inputs.length;i++){
+		
+		let eleid = inputs[i].eleid;
+		let cmd;
+		
+		cmd = ", command=sel_path_"+eleid;
+			
+		
+		Content += 
+"		self.var_text_"+inputs[i].name+" = tk.StringVar()\n\
+		self.var_text_"+inputs[i].name+".set(\""+inputs[i].text+"\")\n\
+		self.change_style(\"C"+i+".TButton\",\n\
+							[(\"\",\""+inputs[i].fgcolor+"\")],\n\
+							[(\"\",\""+inputs[i].bgcolor+"\")]\n\
+							)\n\
+		path_"+eleid+"=tk.StringVar()\n\
+		def sel_path_"+eleid+"():\n\
+			path_ = askopenfilename()\n\
+			path_"+eleid+".set(path_)\n\
+			\n\
+		self."+inputs[i].name+"_btn = ttk.Button(self."+inputs[i].master+", style=\"C"+i+".TButton\", textvariable=self.var_text_"+inputs[i].name+cmd+")\n\
+		self."+inputs[i].name+"_btn.place(x="+inputs[i].left+"+"+inputs[i].width+"*0.7,y="+inputs[i].top+"+"+inputs[i].height+"*0.1,width="+inputs[i].width+"*0.3, height="+inputs[i].height+"*0.8)\n\
+		self."+inputs[i].name+"_etr = ttk.Entry(self."+inputs[i].master+",textvariable=path_"+eleid+")\n\
+		self."+inputs[i].name+"_etr.place(x="+inputs[i].left+",y="+inputs[i].top+"+"+inputs[i].height+"*0.1,width="+inputs[i].width+"*0.6, height="+inputs[i].height+"*0.8)\n";
+		
+		let bdfuns = dic[eleid];
+		for(var key in bdfuns){
+			if(bdfuns[key] === null){
+				continue;
+			}
+			Content+=
+"		self."+inputs[i].name+".bind('<"+bdfuns[key].event+">',"+bdfuns[key].callback+")\n";
+		}
+		Content += "\n";
+	}
+
+	return Content;
+}
+
 function renderCgStyFun(){
 	let content =
 "	def change_style(self,style_name,foreground,background):\n\
@@ -358,9 +401,10 @@ export function activate(context: vscode.ExtensionContext) {
 				var RdbContent = renderRdbContent(message.radiobutton, message.dic);
 
 				var PgbContent = renderPgbContent(message.progressbar, message.dic);
+				
+				var FdgContent = renderFdgContent(message.filedialog, message.dic);
 
-
-				var filecontent = WinContent +  FrmContent + BtnContent + EtrContent + LabContent  + CkbContent +RdbContent+PgbContent+renderCgStyFun() + renderCallbacks(message.dic) + renderMainfun();
+				var filecontent = WinContent +  FrmContent + BtnContent + EtrContent + LabContent  + CkbContent +RdbContent+PgbContent+FdgContent+renderCgStyFun() + renderCallbacks(message.dic) + renderMainfun();
 				
 				// let fileInfos = vscode.window.showSaveDialog();
 				let defaultpath = readFileSync(context.extensionPath+"/out/defaultsavepath.txt");
